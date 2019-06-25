@@ -1,7 +1,7 @@
 #
 # ==== Purpose ====
 #
-# This test checks if the ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER is issued
+# This test checks if the ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES is issued
 # slave_preserve_commit_order value is incompatible with the values of log-bin
 # and log-slave-updates variables when initializing the slave and also when
 # starting the slave.
@@ -10,7 +10,7 @@
 #
 # The server is initially configured with log-bin enabled but
 # log_slave_updates disabled to assert that the error
-# ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER is printed once in the slave's
+# ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES is printed once in the slave's
 # err file.
 # Then, we try to start the slave and verify that, since the configuration was
 # not changed, the same error is issued.
@@ -34,19 +34,19 @@
 --source include/master-slave.inc
 
 --source include/rpl_connection_slave.inc
-CALL mtr.add_suppression(".* slave_preserve_commit_order is not supported unless both log_bin and log_slave_updates are enabled.");
+CALL mtr.add_suppression(".* slave_preserve_commit_order requires log_bin and log_slave_updates to be enabled and slave_parallel_type = LOGICAL_CLOCK.");
 
-# check if the error ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER is present in
+# check if the error ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES is present in
 # the slave's log file
 --let $assert_file=$MYSQLTEST_VARDIR/log/mysqld.2.err
 --let $assert_text= Slave incompatible configuration error present in log
---let $assert_select=  slave_preserve_commit_order is not supported unless both log_bin and log_slave_updates are enabled
+--let $assert_select=  slave_preserve_commit_order requires log_bin and log_slave_updates to be enabled and slave_parallel_type = LOGICAL_CLOCK
 --let $assert_count= 1
 --let $assert_only_after= CURRENT_TEST: rpl.rpl_mts_slave_preserve_commit_order_config_error
 --source include/assert_grep.inc
 
 # starting the slave produces an error because of the incompatible options
---error ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER
+--error ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES
 START SLAVE;
 
 SET @@GLOBAL.slave_preserve_commit_order= FALSE;

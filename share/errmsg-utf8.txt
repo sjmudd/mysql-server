@@ -7199,7 +7199,7 @@ ER_AGGREGATE_ORDER_NON_AGG_QUERY
 ER_SLAVE_WORKER_STOPPED_PREVIOUS_THD_ERROR
   eng "Slave worker has stopped after at least one previous worker encountered an error when slave-preserve-commit-order was enabled. To preserve commit order, the last transaction executed by this thread has not been committed. When restarting the slave after fixing any failed threads, you should fix this worker as well."
 
-ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER
+OBSOLETE_ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER
   eng "slave_preserve_commit_order is not supported %s."
 
 ER_SERVER_OFFLINE_MODE
@@ -19228,6 +19228,9 @@ ER_JSON_VALUE_OUT_OF_RANGE_FOR_FUNC_INDEX 22003
 
 ER_LDAP_EMPTY_USERDN_PASSWORD
   eng "Empty user dn or password is not allowed, not attempting LDAP bind."
+
+ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES
+  eng "slave_preserve_commit_order requires log_bin and log_slave_updates to be enabled and slave_parallel_type = LOGICAL_CLOCK."
 
 #
 # End of 8.0 error messages intended to be logged to the server error log.

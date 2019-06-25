@@ -141,7 +141,7 @@ DROP TABLE t1;
 --echo #
 --source include/stop_slave_sql.inc
 SET GLOBAL slave_parallel_type = 'DATABASE';
---error ER_DONT_SUPPORT_SLAVE_PRESERVE_COMMIT_ORDER
+--error ER_SLAVE_PRESERVE_COMMIT_ORDER_REQUIRES
 START SLAVE SQL_THREAD;
 
 SET GLOBAL slave_parallel_type = 'LOGICAL_CLOCK';
