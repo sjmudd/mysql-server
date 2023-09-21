@@ -114,6 +114,9 @@ const std::string json_multi_factor_authentication(
     "multi_factor_authentication");
 }  // namespace consts
 
+/** Login_session_variables */
+const std::string Login_session_variables("Login_session_variables");
+
 static bool replace_user_metadata(const std::string &json_blob,
                                   bool expect_text, TABLE *user_table);
 
@@ -128,7 +131,8 @@ static std::map<const User_attribute_type, const std::string>
         {User_attribute_type::METADATA, consts::json_metadata_tag},
         {User_attribute_type::COMMENT, consts::json_comment_tag},
         {User_attribute_type::MULTI_FACTOR_AUTHENTICATION_DATA,
-         consts::json_multi_factor_authentication}};
+         consts::json_multi_factor_authentication},
+        {User_attribute_type::LOGIN_SESSION_VARIABLES, consts::Login_session_variables}};
 
 Acl_user_attributes::Acl_user_attributes(MEM_ROOT *mem_root,
                                          bool read_restrictions,
@@ -141,6 +145,7 @@ Acl_user_attributes::Acl_user_attributes(MEM_ROOT *mem_root,
       m_global_privs(global_privs),
       m_password_lock(),
       m_mfa(nullptr),
+      m_login_session_variables(nullptr),
       m_user_attributes_json(nullptr) {}
 
 Acl_user_attributes::Acl_user_attributes(MEM_ROOT *mem_root,

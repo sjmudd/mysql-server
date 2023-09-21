@@ -56,7 +56,8 @@ enum class User_attribute_type {
   PASSWORD_LOCKING,
   METADATA,
   COMMENT,
-  MULTI_FACTOR_AUTHENTICATION_DATA
+  MULTI_FACTOR_AUTHENTICATION_DATA,
+  LOGIN_SESSION_VARIABLES
 };
 
 struct Password_lock {
@@ -279,6 +280,7 @@ class Acl_table_user_writer : public Acl_table {
   User_table_schema *m_table_schema;
   Restrictions *m_restrictions;
   I_multi_factor_auth *m_mfa;
+  Login_session_variables *m_login_session_variables;
   std::function<bool(TABLE *table)> m_user_application_user_metadata;
 };
 

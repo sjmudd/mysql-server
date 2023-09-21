@@ -1,0 +1,34 @@
+#!/bin/sh
+myname=$(basename $0)
+dirname=$(dirname $0)
+
+# figure out the OS and then jump into the right docker image.
+. /etc/os-release
+
+case $ID in
+almalinux|ol|rocky|centos|rhel)
+	# convert to a single digit if there's a decimal part
+	BUILD_VERSION=$(echo $VERSION_ID | sed -e 's/\..*//')
+	;;
+*)
+	echo "ERROR: Unrecognised OS: $NAME ($ID $VERSION_ID). Provide a patch to support your linux version if needed."
+	exit 1
+esac
+
+# for now handle ol only.
+case $ID in
+ol)
+	case $BUILD_VERSION in
+		8)	exec docker run --rm -it -v $(cd $dirname; cd ..; echo $PWD):/usr/src/mysql-server oraclelinux:8 bash
+		;;
+	*)	
+		echo "No support for $ID $VERSION_ID yet"
+		exit 1
+		;;
+	esac
+	;;
+*)	
+	echo "No support for $ID yet"
+	exit 1
+	;;
+esac

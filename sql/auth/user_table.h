@@ -55,7 +55,8 @@ int replace_user_table(THD *thd, TABLE *table, LEX_USER *combo, ulong rights,
                        bool revoke_grant, bool can_create_user,
                        acl_table::Pod_user_what_to_update &what_to_update,
                        Restrictions *restrictions = nullptr,
-                       I_multi_factor_auth *mfa = nullptr);
+                       I_multi_factor_auth *mfa = nullptr,
+                       Login_session_variables *login_session_variables = nullptr);
 
 bool read_user_table(THD *thd, TABLE *table);
 #endif /* USER_TABLE_INCLUDED */

@@ -1,0 +1,4 @@
+{
+	"name": "mysql-server",
+	"image": "oraclelinux:8"
+}

@@ -1,0 +1,8 @@
+
+
+things to do:
+
+1. find place for connecting
+2. find place for loading session variables
+3. scan mysql.user for the user_session_variables
+1. change config to find 

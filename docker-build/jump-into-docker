@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# assume in this directory
+# just do it with no figuring things out.
+
+
+# straight into oraclelinux:8
+
+sudo docker run --rm -it --network=host --hostname=docker-builder -v $PWD:/usr/src/mysql-server oraclelinux:8 bash
