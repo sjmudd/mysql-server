@@ -5,7 +5,7 @@ set -ex
 cd /workspaces/mysql-server
 
 if [ -d bld ]; then
-	cd bld && rm -rf .
+	cd bld && rm -rf *
 else
 	mkdir bld
 fi

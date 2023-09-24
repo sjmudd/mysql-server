@@ -20,11 +20,11 @@ yum install -y \
 	bison \
 	cmake \
 	cyrus-sasl-devel libaio-devel \
-       	gcc-toolset-12-annobin-annocheck \
-        gcc-toolset-12-annobin-plugin-gcc \
-        gcc-toolset-12-binutils \
-        gcc-toolset-12-gcc \
-        gcc-toolset-12-gcc-c++ \
+	gcc-toolset-12-annobin-annocheck \
+	gcc-toolset-12-annobin-plugin-gcc \
+	gcc-toolset-12-binutils \
+	gcc-toolset-12-gcc \
+	gcc-toolset-12-gcc-c++ \
 	git \
 	libcurl-devel \
 	libtirpc-devel \
