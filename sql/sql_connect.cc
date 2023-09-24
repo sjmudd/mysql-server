@@ -27,6 +27,7 @@
 */
 
 #include "sql/sql_connect.h"
+#include "sql/auth/login_session_variables.h"
 
 #include "my_config.h"
 
@@ -772,40 +773,6 @@ void end_connection(THD *thd) {
 }
 
 /*
-  Handle the updating of local session variables with those from the user definition
-*/
-
-static void handle_user_session_dynamic_variables(thd) {
-    // for debugging log something like reading in variables from mysql.user.User_attributes
-
-// +----------------------------------------------------------------------+
-// | User_attributes                                                      |
-// +----------------------------------------------------------------------+
-// | {"metadata": {"created_by": "badmin", "account_type": "dba"}}        |
-// | {"metadata": {"created_by": "badmin"}}                               |
-// | {"metadata": {"created_by": "GrantsAPI", "created_for": "rotation"}} |
-// | {"metadata": {"created_by": "GrantsAPI"}}                            |
-// +----------------------------------------------------------------------+
-//
-// see: bugs.mysql.com/105006
-// We add "initial_session_variables"
-// sample values could be:
-// "Login_session_variables": {   // upper case to match say "Password_locking"
-
-//   "wait_timeout": 600,
-//   "system_time_timezone": "UTC", // requires time zone data to be loaded into MySQL
-//   "time_zone": "+00:00",
-//   "sql_require_primary_key": "OFF",
-//   "max_execution_time", 10,
-// }
-
-// CODE:
-//
-// const std::string Login_session_variables("Login_session_variables");
-
-}
-
-/*
   Initialize THD to handle queries
 */
 
@@ -845,7 +812,7 @@ static void prepare_new_connection_state(THD *thd) {
   alloc_and_copy_thd_dynamic_variables(thd, true);
 
   // NOW WE HAVE DYNAMIC VARIABLES WE CAN LOAD IN THE USER SPECIFIED SETTINGS
-  handle_user_session_dynamic_variables(thd);
+  handle_login_session_variables(thd);
 
   thd->set_proc_info(nullptr);
   thd->set_command(COM_SLEEP);

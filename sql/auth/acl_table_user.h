@@ -200,6 +200,8 @@ class Acl_user_attributes {
   Password_lock m_password_lock;
   /** multi factor auth info */
   I_multi_factor_auth *m_mfa;
+  /** login session variables */
+  Login_session_variables *m_login_session_variables;   // WRONG. this is where we store the user session variables not the constant value, so should not be a pointer to a string.!!!
   /** Save the original json object */
   Json_dom_ptr m_user_attributes_json;
 };

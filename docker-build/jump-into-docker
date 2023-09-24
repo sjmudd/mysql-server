@@ -6,4 +6,4 @@
 
 # straight into oraclelinux:8
 
-sudo docker run --rm -it --network=host --hostname=docker-builder -v $PWD:/usr/src/mysql-server oraclelinux:8 bash
+sudo docker run --rm -it --network=host --hostname=docker-builder -v $PWD:/workspaces/mysql-server oraclelinux:8 bash

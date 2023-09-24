@@ -112,10 +112,11 @@ const std::string json_comment_tag("comment");
 /** multi factor authentication methods */
 const std::string json_multi_factor_authentication(
     "multi_factor_authentication");
-}  // namespace consts
 
 /** Login_session_variables */
-const std::string Login_session_variables("Login_session_variables")  // namespace consts;
+const std::string Login_session_variables("Login_session_variables");
+
+};  // namespace consts
 
 static bool replace_user_metadata(const std::string &json_blob,
                                   bool expect_text, TABLE *user_table);
@@ -283,6 +284,26 @@ bool Acl_user_attributes::deserialize_password_lock(
   return false;
 }
 
+bool Acl_user_attributes::deserialize_login_session_variables(
+    const Json_object &json_object) {
+
+  /** Login session variables */
+  if (m_login_session_variables) {
+    const Json_dom *login_session_variables_dom = json_object.get(
+        attribute_type_to_str[User_attribute_type::LOGIN_SESSION_VARIABLES]);
+    if (login_session_variables_dom) {
+      if (login_session_variable_dom->json_type() != enum_json_type::J_OBJECT)
+        return true;
+      const Json_object_map *login_session_variables =
+          down_cast<const Json_object_map *>(login_session_variables_dom);
+          // iterate over key / value here
+      // m_login_session_variables.set_db(whatever_key_values)
+    }
+  }
+
+  return false;
+}
+
 bool Acl_user_attributes::deserialize(const Json_object &json_object) {
   {
     /** Second password */
@@ -314,6 +335,7 @@ bool Acl_user_attributes::deserialize(const Json_object &json_object) {
 
   if (deserialize_password_lock(json_object)) return true;
   if (deserialize_multi_factor(json_object)) return true;
+  if (deserialize_login_session_variables(json_object)) return true;
 
   return false;
 }
