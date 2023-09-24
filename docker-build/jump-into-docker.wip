@@ -21,13 +21,13 @@ ol)
 	case $BUILD_VERSION in
 		8)	exec docker run --rm -it -v $(cd $dirname; cd ..; echo $PWD):/usr/src/mysql-server oraclelinux:8 bash
 		;;
-	*)	
+	*)
 		echo "No support for $ID $VERSION_ID yet"
 		exit 1
 		;;
 	esac
 	;;
-*)	
+*)
 	echo "No support for $ID yet"
 	exit 1
 	;;
