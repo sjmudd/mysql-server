@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA */
 
 // Forward declarations
 class I_multi_factor_auth;
+class Login_session_variables;
 class Restrictions;
 class THD;
 struct LEX_USER;

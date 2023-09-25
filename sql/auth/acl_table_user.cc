@@ -115,7 +115,7 @@ const std::string json_multi_factor_authentication(
 }  // namespace consts
 
 /** Login_session_variables */
-const std::string Login_session_variables("Login_session_variables");
+const std::string Login_session_variables("Login_session_variables")  // namespace consts;
 
 static bool replace_user_metadata(const std::string &json_blob,
                                   bool expect_text, TABLE *user_table);
