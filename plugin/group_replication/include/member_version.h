@@ -69,4 +69,9 @@ class Member_version {
   uint32 version;
 };
 
+/**
+ * used to determine eligible primary servers when chaning primary in Group Replication
+ */
+int32 gr_primary_min_equivalent_version(const Member_version &version);
+
 #endif /* MEMBER_VERSION_INCLUDED */
