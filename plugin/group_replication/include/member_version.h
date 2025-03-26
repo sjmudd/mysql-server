@@ -69,4 +69,6 @@ class Member_version {
   uint32 version;
 };
 
+int32 gr_primary_min_equivalent_version(const Member_version &version);
+
 #endif /* MEMBER_VERSION_INCLUDED */

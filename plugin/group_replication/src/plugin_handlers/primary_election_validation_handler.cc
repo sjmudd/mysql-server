@@ -111,6 +111,9 @@ Primary_election_validation_handler::validate_primary_version(
   /*
     Check if any of the members is below the needed version
     Also get the group lowest version and the version of the primary
+
+    Modified here to use the lowest equivalent version to allow
+    8.0.35+ / 8.4.* / 9.X.* to be considered equivalent to each other.
   */
   for (const std::pair<const std::string, Election_member_info *> &member_info :
        group_members_info) {
@@ -123,10 +126,10 @@ Primary_election_validation_handler::validate_primary_version(
     }
 
     if (member_info.second->get_uuid() == uuid) {
-      primary_member_version = member_info.second->get_member_version();
+      primary_member_version = gr_primary_min_equivalent_version(member_info.second->get_member_version());
     }
     if (member_info.second->get_member_version() < lowest_member_version) {
-      lowest_member_version = member_info.second->get_member_version();
+      lowest_member_version = gr_primary_min_equivalent_version(member_info.second->get_member_version());
     }
   }
 
@@ -136,7 +139,7 @@ Primary_election_validation_handler::validate_primary_version(
     if (lowest_member_version >= PRIMARY_ELECTION_PATCH_CONSIDERATION) {
       if (lowest_member_version < primary_member_version) {
         error_msg.assign(
-            "The appointed primary member has a version that is"
+            "The appointed primary member has an equivalent version that is"
             " greater than the one of some of the members"
             " in the group.");
         return INVALID_PRIMARY;

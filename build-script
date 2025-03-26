@@ -1,0 +1,60 @@
+#!/bin/sh
+
+
+
+docker build -t build_mysql .
+
+docker run -it -w /workspace/mysql-server -v $PWD:/workspace/mysql-server build_mysql bash
+
+# cleanup:
+# docker image prune -a
+# docker container prune
+
+
+
+exit 0
+#
+# Call this first
+# docker run --rm -it -w /workspace/mysql-server -v $PWD:/workspace/mysql-server oraclelinux:9 bash
+#
+
+yum update -y
+yum install -y 'dnf-command(config-manager)'
+
+yum config-manager --set-enabled ol9_codeready_builder
+
+echo "### installing required rpms"
+yum install -y \
+	bind-utils \
+	bison \
+	cmake \
+	cyrus-sasl-devel \
+	git \
+	krb5-devel \
+	libaio-devel \
+	libcurl-devel \
+	libfido2-devel \
+	libtirpc-devel \
+	libudev-devel \
+	ncurses-devel \
+	numactl-devel \
+	openldap-devel \
+	openssl-devel \
+	perl \
+	perl-JSON rpcgen \
+	rpm-build \
+	time \
+	gcc-toolset-12-annobin-annocheck \
+	gcc-toolset-12-annobin-plugin-gcc \
+	gcc-toolset-12-binutils  \
+	gcc-toolset-12-dwz \
+	gcc-toolset-12-gcc \
+	gcc-toolset-12-gcc-c++ \
+	wget \
+	zlib-devel
+cd /workspace/mysql-server
+test -d bld || mkdir bld
+cd bld
+cmake ../ \
+	-DDOWNLOAD_BOOST=1 \
+	-DWITH_BOOST=boost

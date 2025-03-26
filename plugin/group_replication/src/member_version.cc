@@ -94,3 +94,47 @@ bool Member_version::operator>=(const Member_version &other) const {
 bool Member_version::operator<=(const Member_version &other) const {
   return (*this == other || *this < other);
 }
+
+/*
+ * For any version return the equivalent version that can be compared against
+ * for doing primary GR elections.
+ *
+ * - original behaviour was to only allow the lowest version to be elegible
+ *   to be primary.
+ * - new behaviour:
+ *   - treat 8.0.35+ versions to be equivalent
+ *   - treat 8.4.* versions to be equivalent
+ *   - treat 9.X.* versions to be equivalent
+ *   - when different major/minor versions are involved always choose the
+ *     lowest equivalent version.
+ */
+
+constexpr uint32_t VERSION_8 = 8;
+constexpr uint32_t VERSION_9 = 9;
+constexpr uint32_t MINOR_VERSION_0 = 0;
+constexpr uint32_t MINOR_VERSION_4 = 4;
+constexpr uint32_t PATCH_VERSION_35 = 35;
+constexpr uint32_t VERSION_MASK = 0x00FFFF00;
+
+int32 gr_primary_min_equivalent_version(const Member_version &version) {
+  // 9.X.* versions are equivalent
+  if (version.get_major_version() == VERSION_9) {
+    return (version.get_version() & VERSION_MASK);
+  }
+
+  // 8.4.* versions are equivalent
+  if (version.get_major_version() == VERSION_8 &&
+      version.get_minor_version() == MINOR_VERSION_4) {
+    return (version.get_version() & VERSION_MASK);
+  }
+
+  // 8.0.35+ versions are equivalent
+  if (version.get_major_version() == VERSION_8 &&
+      version.get_minor_version() == MINOR_VERSION_0 &&
+      version.get_patch_version() >= PATCH_VERSION_35) {
+    return ((version.get_version() & VERSION_MASK) | PATCH_VERSION_35)
+  }
+
+  // for all other versions, return the version itself
+  return version.get_version();
+}
