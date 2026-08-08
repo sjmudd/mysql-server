@@ -1,4 +1,4 @@
-# Copyright (c) 2017, 2026, Oracle and/or its affiliates.
+# Copyright (c) 2011, 2026, Oracle and/or its affiliates.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License, version 2.0,
@@ -21,26 +21,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
-DISABLE_MISSING_PROFILE_WARNING()
 
-SET(MY_SYSTEM_SOURCES
-  my_system.cc
-  my_system_api/my_system_api_common.cc
-)
+CHECK_FUNCTION_EXISTS(epoll_wait HAVE_EPOLL_WAIT)
 
-IF(UNIX)
-  LIST(APPEND MY_SYSTEM_SOURCES
-    my_system_api/my_system_api_cgroup.cc)
+IF(HAVE_EPOLL_WAIT)
+  SET(TP_METHOD src/epoll.cc)
+ELSE()
+  SET(TP_METHOD src/poll.cc)
 ENDIF()
 
-IF(LINUX)
-  LIST(APPEND MY_SYSTEM_SOURCES
-    my_system_api/my_system_api_linux.cc)
-ENDIF()
+MYSQL_ADD_PLUGIN(thread_pool
+  src/thread_pool.cc
+  src/thread_pool_plugin.cc
+  src/thread_pool_tables.cc
+  src/table_thread_state.cc
+  src/table_thread_group_state.cc
+  src/table_thread_group_stats.cc
+  src/table_connections.cc
+  ${TP_METHOD} MODULE_ONLY
+  LINK_LIBRARIES extra::rapidjson library_mysys)
 
-ADD_LIBRARY(library_mysys STATIC
-  my_memory.cc
-  my_hex_tools.cc
-  my_base64_encode.cc
-  ${MY_SYSTEM_SOURCES}
-)
+ADD_DEFINITIONS(-DMYSQL_SERVER)
+ADD_DEFINITIONS(-DLOG_COMPONENT_TAG="thread_pool")
+

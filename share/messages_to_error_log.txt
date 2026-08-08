@@ -12838,6 +12838,48 @@ ER_TEMPTABLE_ENGINE_ERROR
 ER_AUTH_INITIAL_PLUGIN_OVERRIDE
   eng "Plugin '%s' from authentication policy cannot be used for initial handshake, using '%s' default instead"
 
+#
+# Error numbers below are pinned via start-error-number to match trunk's
+# (9.7+) actual assigned numbers exactly, verified by running comp_err
+# against trunk's own share/messages_to_error_log.txt. Entry order below
+# must match trunk's file order, since numbers auto-increment sequentially
+# from each start-error-number pragma.
+#
+start-error-number 15509
+
+ER_THREAD_POOL_CONNECTION_INIT_REPORT
+   eng "TP conn (init: in, queue, auth, err, ok. port: managed(delta), active, opened, closed, added, dropped): %s"
+
+ER_THREAD_POOL_ALLOC_FAILED
+   eng "Thread pool failed to allocate %s."
+
+ER_THREAD_POOL_SOCKETPAIR_FAILED
+   eng "socketpair() failed with errno: %d"
+
+ER_THREAD_POOL_LOW_LEVEL_INIT_FAILED
+   eng "tp_client_low_level_init() failed"
+
+ER_THREAD_POOL_LOW_LEVEL_ARM_FAILED
+   eng "tp_client_low_level_arm() failed"
+
+ER_THREAD_POOL_LOW_LEVEL_ARM_FAILED_WITH_ERRNO
+   eng "tp_client_low_level_arm() failed with %d"
+
+ER_THREAD_POOL_CREATE_THREAD_FAILED
+   eng "Can't create pool thread (error %d, errno: %d)"
+
+ER_THREAD_POOL_LOW_LEVEL_INIT_ALLOC_FAILED
+   eng "tp_client_low_level_init() for wait context failed to allocate memory"
+
+ER_THREAD_POOL_CREATE_EPOLL_FAILED
+   eng "epoll_create() failed with %d"
+
+ER_THREAD_POOL_EPOLL_WAIT_ERROR
+   eng "Thread pool epoll_wait() error: errno=%d."
+
+ER_THREAD_POOL_POLL_WAIT_ERROR
+   eng "Thread pool poll_wait() error: errno=%d."
+
 # DO NOT add server-to-client messages here;
 # they go in messages_to_clients.txt
 # in the same directory as this file.
@@ -12878,6 +12920,16 @@ ER_AUDIT_LOG_OFFLOAD_WARNING
 start-error-number 15610
 ER_AUDIT_LOG_OFFLOAD_ERROR
   eng "%s"
+
+start-error-number 15643
+ER_WARN_THREAD_POOL_QUERY_THREADS_INCOMPATIBLE_MTL
+  eng "The default or user configured value thread_pool_query_threads_per_group(%u) exceeds transaction threads limit per group (%u). To ensure correct operation, the server is automatically setting thread_pool_query_threads_per_group to %u. If this is not intended, consider setting thread_pool_max_transactions_limit to a higher value.%s"
+
+ER_WARN_THREAD_POOL_QUERY_THREADS_MISMATCH_INCOMPATIBLE_ALGO
+  eng "The configured value thread_pool_query_threads_per_group(1) is not recommended when used with HIGH_CONCURRENCY_ALGORITHM. Consider setting thread_pool_query_threads_per_group to a higher value for better performance."
+
+ER_WARN_THREAD_POOL_DEDICATED_LISTENERS_INCOMPATIBLE_MTL
+  eng "The thread_pool_dedicated_listeners option can only be set to ON if thread_pool_max_transaction_limit > 0. Since this requirement is not met, the server is automatically disabling thread_pool_dedicated_listeners. To use dedicated listeners, please consider enabling thread_pool_max_transactions_limit."
 
 start-error-number 15694
 ER_WARN_AUDIT_LOG_SYSVAR_ADJUSTED

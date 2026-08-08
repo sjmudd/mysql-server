@@ -279,6 +279,17 @@ my_socket thd_get_fd(THD *thd) {
 }
 
 /**
+  Get MYSQL_SOCKET struct for this connection
+
+  @param thd            THD object
+
+  @retval               MYSQL_SOCKET struct of the connection
+*/
+MYSQL_SOCKET thd_get_mysql_socket(THD *thd) {
+  return thd->get_protocol_classic()->get_vio()->mysql_socket;
+}
+
+/**
   Set thread specific environment required for thd cleanup in thread pool.
 
   @param thd            THD object
@@ -301,6 +312,26 @@ my_thread_attr_t *get_connection_attrib() { return &connection_attrib; }
 */
 
 ulong get_max_connections() { return max_connections; }
+
+/**
+  Get accumulated number of incoming connection requests.
+
+  @retval         Number of incoming connection requests
+*/
+
+longlong get_incoming_connects() {
+  return Connection_handler_manager::get_incoming_connects();
+}
+
+/**
+  Get number of connections aborted before authentication.
+
+  @retval         Number of connections aborted before authentication
+*/
+
+longlong get_aborted_connects() {
+  return Connection_handler_manager::get_instance()->aborted_connects();
+}
 
 //////////////////////////////////////////////////////////
 //

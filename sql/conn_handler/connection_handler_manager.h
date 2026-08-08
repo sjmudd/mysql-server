@@ -29,6 +29,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <sys/types.h>
+#include <atomic>
 
 #include "mysql/psi/mysql_cond.h"  // mysql_cond_t
 #include "mysql/psi/mysql_mutex.h"
@@ -118,6 +119,9 @@ class Connection_handler_manager {
   static ulong max_used_connections;       // Protected by LOCK_connection_count
   static ulong max_used_connections_time;  // Protected by LOCK_connection_count
 
+  // Atomic status variables.
+  static std::atomic_ulong incoming_connection_count;
+
   // System variable
   static ulong thread_handling;
 
@@ -196,6 +200,10 @@ class Connection_handler_manager {
   void inc_aborted_connects() { m_aborted_connects++; }
 
   ulong aborted_connects() const { return m_aborted_connects; }
+
+  static ulong get_incoming_connects() {
+    return incoming_connection_count.load();
+  }
 
   /**
     @note This is a dirty read.
