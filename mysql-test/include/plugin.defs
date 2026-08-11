@@ -195,3 +195,10 @@ component_test_execute_prepared_statement  plugin_output_directory  no  COMPONEN
 
 # component_test_execute_regular_statement
 component_test_execute_regular_statement  plugin_output_directory  no  COMPONENT_TEST_EXECUTE_REGULAR_STATEMENT
+
+# Thread Pool Plugin
+thread_pool                      plugin_output_directory  no ONLY_THREADPOOL_PLUGIN   thread_pool
+thread_pool                      plugin_output_directory  no THREADPOOL_PLUGIN        thread_pool,TP_THREAD_STATE,TP_THREAD_GROUP_STATE,TP_THREAD_GROUP_STATS
+thread_pool                      plugin_output_directory  no TP_THREAD_GROUP_STATE_PLUGIN TP_THREAD_GROUP_STATE
+thread_pool                      plugin_output_directory  no TP_THREAD_STATE_PLUGIN       TP_THREAD_STATE
+thread_pool                      plugin_output_directory  no TP_THREAD_TWO_PLUGIN         TP_THREAD_GROUP_STATS,TP_THREAD_STATE
